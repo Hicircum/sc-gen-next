@@ -1,0 +1,9 @@
+html.dark {
+  --custom-bg-color: #1e1e1e;
+  --custom-box-shadow:  0px 0px 15px 0px #0000000f, 0px 2px 30px 0px #00000038, inset 0px 0px 1px 0px #ffffff26;
+}
+
+html {
+  --custom-bg-color: #ffffff;
+  --custom-box-shadow:  0px 0px 15px 0px #00000008, 0px 2px 30px 0px #00000014, 0px 0px 1px 0px #0000004d;
+}
