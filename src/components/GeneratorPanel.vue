@@ -73,19 +73,20 @@ const selectAvatar = () => {
 
 const bUID = ref('');
 const fetchAvatarByUID = async () => {
-  if (!bUID.value) return;
-  try {
-    const response = await fetch(`https://api.game-cdn.me/?uid=${bUID.value}`);
-    if (!response.ok) throw new Error('网络错误');
-    const blob = await response.blob();
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      imageURL.value = reader.result as string;
-    };
-    reader.readAsDataURL(blob);
-  } catch (error) {
-    console.error('获取头像失败，请检查网络连接');
-  }
+  //if (!bUID.value) return;
+  //try {
+  //  const response = await fetch(`https://api.game-cdn.me/?uid=${bUID.value}`);
+   // if (!response.ok) throw new Error('网络错误');
+   // const blob = await response.blob();
+   // const reader = new FileReader();
+    //reader.onloadend = () => {
+    //  imageURL.value = reader.result as string;
+    //};
+   // reader.readAsDataURL(blob);
+  //} catch (error) {
+   // console.error('获取头像失败，请检查网络连接');
+//}
+  imageURL.value = `https://workers.vrp.moe/bilibili/avatar/${bUID.value}`
 };
 
 const parseScTags = (xmlText: string) => {
