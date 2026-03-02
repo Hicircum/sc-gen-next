@@ -164,7 +164,7 @@ const priceLevel = computed(() => {
         }
       }
       .username {
-        width: 100px;
+        max-width: 100%;
         font-size: 12px;
         line-height: 15px;
         color: #333;
