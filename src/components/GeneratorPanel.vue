@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { ElMessage } from 'element-plus'
 import SuperChat from './SuperChat.vue';
 import html2canvas from 'html2canvas';
 
@@ -73,20 +74,28 @@ const selectAvatar = () => {
 
 const bUID = ref('');
 const fetchAvatarByUID = async () => {
-  //if (!bUID.value) return;
-  //try {
-  //  const response = await fetch(`https://api.game-cdn.me/?uid=${bUID.value}`);
-   // if (!response.ok) throw new Error('网络错误');
-   // const blob = await response.blob();
-   // const reader = new FileReader();
-    //reader.onloadend = () => {
-    //  imageURL.value = reader.result as string;
-    //};
-   // reader.readAsDataURL(blob);
-  //} catch (error) {
-   // console.error('获取头像失败，请检查网络连接');
-//}
-  imageURL.value = `https://workers.vrp.moe/bilibili/avatar/${bUID.value}`
+  if (!bUID.value) return;
+  try {
+    const response = await fetch(`https://api.122511.xyz/bilibili/avatar/${bUID.value}`);
+    if (response.status === 429) {
+      console.error("请求过多 (429)，请稍后再试");
+      ElMessage({
+        message: '429 请求过快',
+        type: 'error',
+        plain: true,
+      })
+      return;
+    }
+    if (!response.ok) throw new Error('网络错误');
+    const blob = await response.blob();
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      imageURL.value = reader.result as string;
+    };
+    reader.readAsDataURL(blob);
+  } catch (error) {
+    console.error('获取头像失败，请检查网络连接');
+  }
 };
 
 const parseScTags = (xmlText: string) => {
