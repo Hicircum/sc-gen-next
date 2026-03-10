@@ -4,6 +4,8 @@ import { ElMessage } from 'element-plus'
 import SuperChat from './SuperChat.vue';
 import html2canvas from 'html2canvas';
 
+const loading = ref(false)
+
 const form = ref({
   dataSource: 0,
   username: '',
@@ -74,9 +76,10 @@ const selectAvatar = () => {
 
 const bUID = ref('');
 const fetchAvatarByUID = async () => {
-  if (!bUID.value) return;
+  if (!bUID.value || loading.value) return;
+  loading.value = true;
   try {
-    const response = await fetch(`https://api.122511.xyz/bilibili/avatar/${bUID.value}`);
+    const response = await fetch(`/api/bilibili/avatar/${bUID.value}`);
     if (response.status === 429) {
       console.error("请求过多 (429)，请稍后再试");
       ElMessage({
@@ -94,7 +97,13 @@ const fetchAvatarByUID = async () => {
     };
     reader.readAsDataURL(blob);
   } catch (error) {
-    console.error('获取头像失败，请检查网络连接');
+    ElMessage({
+        message: '网络错误',
+        type: 'error',
+        plain: true,
+    })
+  } finally {
+    loading.value = false; // 无论成功失败都恢复
   }
 };
 
@@ -213,7 +222,10 @@ const setMessage = (item: { user: string; uid: string; price: string; text: stri
           v-model="bUID"
         />
         <el-button style="margin-left: 10px;"
-          @click="fetchAvatarByUID">获取</el-button>
+          @click="fetchAvatarByUID"
+          :loading="loading"
+          :disabled="loading"
+          >获取</el-button>
       </el-form-item>
       <el-form-item label="留言内容">
         <el-input v-model="form.message"
