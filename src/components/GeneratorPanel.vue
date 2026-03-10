@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { ElMessage } from 'element-plus'
 import SuperChat from './SuperChat.vue';
 import html2canvas from 'html2canvas';
 
